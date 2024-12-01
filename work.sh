@@ -6,6 +6,10 @@
 #SBATCH --error=/home/hfontaine/MAX78000_face_detection/results/errors_%j.txt       # where to store error messages
 #SBATCH --gres=gpu:1                                                                # Request 1 GPU
 
+# Uncomment the line below to request a specific node, or leave it commented to run on any node
+#SBATCH --nodelist=artongpu01                                                       # Request a specific node
+
+
 echo "Starting script..."
 
 # ==========================
