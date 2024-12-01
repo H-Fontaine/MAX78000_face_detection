@@ -6,31 +6,32 @@
 #SBATCH --error=/home/hfontaine/MAX78000_face_detection/results/errors_%j.txt       # where to store error messages
 #SBATCH --gres=gpu:1                                                                # Request 1 GPU
 
-
-
 echo "Starting script..."
 
 # ==========================
 # User-defined parameters
 # ==========================
+# Define path without trailing slash
 USED_NODES_FILE="/home/hfontaine/MAX78000_face_detection/used_nodes.txt"
 PYTHON_SCRIPT_PATH="/home/hfontaine/MAX78000_face_detection/work.py"
-LOCAL_CONDA_ENV_PATH="/itet-stor/hfontaine/net_scratch/venv/conda_envs/"
-ENV_NAME="cluster"
+LOCAL_CONDA_ENV_PATH="/itet-stor/hfontaine/net_scratch/venv/conda_envs/cluster"
+DATASET_SOURCE="/itet-stor/hfontaine/net_scratch/datasets/widerface"
 NODE_PERSONAL_DIRECTORY="/scratch/$USER"
 
 # ==========================
 # Script logic
 # ==========================
-NODE_CONDA_ENV="$NODE_PERSONAL_DIRECTORY/$ENV_NAME"
-PYTHON_INTERPRETER="$NODE_CONDA_ENV/bin/python3"
+NODE_CONDA_ENV="$NODE_PERSONAL_DIRECTORY/conda_env"
+PYTHON_INTERPRETER="$NODE_PERSONAL_DIRECTORY/conda_env/bin/python3"
+NODE_DATASET_DIRECTORY="$NODE_PERSONAL_DIRECTORY/datasets"
 
 # Function to clean up the environment and temporary files
 cleanup() {
     if [[ $CLEANUP_FLAG == "1" ]]; then
-        echo "Cleaning up temporary files and conda environment..."
+        echo "Cleaning up temporary files, conda environment, and datasets..."
         rm -rf "$TMPDIR"
         rm -rf "$NODE_CONDA_ENV"
+        rm -rf "$NODE_DATASET_DIRECTORY"
         echo "Cleanup complete."
     else
         echo "No cleanup required."
@@ -84,8 +85,16 @@ mkdir -p "$NODE_PERSONAL_DIRECTORY" || {
 }
 
 # Copy the virtual environment to the local scratch
-rsync -avq "${LOCAL_CONDA_ENV_PATH}${ENV_NAME}" "$NODE_CONDA_ENV" --compress || {
+# /!\ remove --ignore-existing to update the environment
+rsync -avq --ignore-existing "$LOCAL_CONDA_ENV_PATH/" "$NODE_CONDA_ENV/" --compress || {
     echo "Failed to copy conda environment" >&2
+    exit 1
+}
+
+# Copy the dataset to the local scratch
+# /!\ remove --ignore-existing to update the dataset
+rsync -avq --ignore-existing "$DATASET_SOURCE" "$NODE_DATASET_DIRECTORY/" --compress || {
+    echo "Failed to copy dataset" >&2
     exit 1
 }
 
