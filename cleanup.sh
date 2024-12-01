@@ -28,7 +28,7 @@ for NODE in $USED_NODES; do
 echo "Cleaning up on node: $NODE"
 
 # Remove local conda environment directory
-rm -rf /scratch/$USER/conda_env || echo "Failed to remove /scratch/$USER/conda_env on $NODE"
+rm -rf /scratch/$USER || echo "Failed to remove /scratch/$USER on $NODE"
 EOF
 
 done

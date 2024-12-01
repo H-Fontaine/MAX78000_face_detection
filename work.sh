@@ -19,7 +19,7 @@ echo "Starting script..."
 USED_NODES_FILE="/home/hfontaine/MAX78000_face_detection/used_nodes.txt"
 PYTHON_SCRIPT_PATH="/home/hfontaine/MAX78000_face_detection/work.py"
 LOCAL_CONDA_ENV_PATH="/itet-stor/hfontaine/net_scratch/venv/conda_envs/cluster"
-DATASET_SOURCE="/itet-stor/hfontaine/net_scratch/datasets/widerface"
+DATASET_SOURCE="/itet-stor/hfontaine/net_scratch/datasets/PreprocessedWider"
 NODE_PERSONAL_DIRECTORY="/scratch/$USER"
 
 # ==========================
