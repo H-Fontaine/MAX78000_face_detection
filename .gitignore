@@ -1,3 +1,5 @@
-/dataset
+/datasets
 /results
 used_nodes.txt
+/ai8x-training
+/ai8x-synthesis
