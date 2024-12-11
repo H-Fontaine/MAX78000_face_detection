@@ -32,6 +32,24 @@ train :
 		--deterministic \
 		--param-hist --pr-curves --embedding --device MAX78000 $(ARGS)
 
+QAT_OUT=$(MODEL_NAME)_trained-q.pth.tar
+quantize :
+	cd ai8x-synthesis && \
+	. .venv/bin/activate && \
+	python quantize.py ../ai8x-training/latest_log_dir/qat_best.pth.tar trained/$(QAT_OUT) \
+		--device MAX78000 -v $(ARGS)
+
+evaluate :
+	cd ai8x-training && \
+	. .venv/bin/activate && \
+	python train.py \
+		--model $(MODEL_NAME) \
+		--dataset $(DATASET_NAME) \
+		--data ../$(DATASET_PATH) \
+		--exp-load-weights-from ../ai8x-synthesis/trained/$(QAT_OUT) \
+		--device MAX78000 \
+		--confusion --evaluate $(ARGS)
+
 links :
 	ln -f -s $(CURDIR)/$(MODEL_FILE) ai8x-training/models/$(MODEL_FILE)
 	ln -f -s $(CURDIR)/$(DATASET_FILE) ai8x-training/datasets/$(DATASET_FILE)
