@@ -20,27 +20,31 @@ class FaceNet(nn.Module):
         dim_x, dim_y = dimensions
         assert dim_x == dim_y == 88 # Only square supported
 
-        self.conv1 = ai8x.FusedMaxPoolConv2dReLU(in_channels=num_channels, out_channels=4, kernel_size =3,
-                                                 padding=1, bias=bias, **kwargs)
+        self.conv1 = ai8x.FusedConv2dReLU(in_channels=num_channels, out_channels=4, kernel_size=3,
+                                          padding=1, bias=bias, **kwargs)
         # padding 1 -> no change in dimensions
-        # pooling, padding 0 -> dimensions halved
-        dim_x //= 2 # 44
-        dim_y //= 2 # 44
 
         self.conv2 = ai8x.FusedMaxPoolConv2dReLU(in_channels=4, out_channels=8, kernel_size=3,
                                                  padding=1, bias=bias, **kwargs)
         # conv padding 1 -> no change in dimensions 
         # pooling, padding 0 -> dimensions halved
-        dim_x //= 2 # 22
-        dim_y //= 2 # 22
+        dim_x //= 2 # 44
+        dim_y //= 2 # 44
 
         self.conv3 = ai8x.FusedMaxPoolConv2dReLU(in_channels=8, out_channels=16, kernel_size=3,
                                                  padding=1, bias=bias, **kwargs)
         # pooling, padding 0 -> dimensions halved
+        dim_x //= 2 # 22
+        dim_y //= 2 # 22
+
+        self.conv4 = ai8x.FusedAvgPoolConv2dReLU(in_channels=16, out_channels=32, kernel_size=3,
+                                                 padding=1, bias=bias, **kwargs)
+        # conv padding 1 -> no change in dimensions
+        # pooling, padding 0 -> dimensions halved
         dim_x //= 2 # 11
         dim_y //= 2 # 11
 
-        self.conv4 = ai8x.FusedAvgPoolConv2dReLU(in_channels=16, out_channels=32, kernel_size=3,
+        self.conv5 = ai8x.FusedAvgPoolConv2dReLU(in_channels=32, out_channels=32, kernel_size=3,
                                                  padding=1, bias=bias, **kwargs)
         # conv padding 1 -> no change in dimensions
         # pooling, padding 0 -> dimensions halved
@@ -62,6 +66,7 @@ class FaceNet(nn.Module):
         x = self.conv2(x)
         x = self.conv3(x)
         x = self.conv4(x)
+        x = self.conv5(x)
         x = x.view(x.size(0), -1)
         x = self.fcx(x)
         return x
