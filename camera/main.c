@@ -198,3 +198,18 @@ int main(void)
 
     return ret;
 }
+
+/*
+  SUMMARY OF OPS
+  Hardware: 2,857,344 ops (2,741,056 macc; 105,344 comp; 10,944 add; 0 mul; 0 bitwise)
+    Layer 0: 867,328 ops (836,352 macc; 30,976 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 1: 604,032 ops (557,568 macc; 46,464 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 2: 580,800 ops (557,568 macc; 23,232 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 3: 569,184 ops (557,568 macc; 3,872 comp; 7,744 add; 0 mul; 0 bitwise)
+    Layer 4: 234,400 ops (230,400 macc; 800 comp; 3,200 add; 0 mul; 0 bitwise)
+    Layer 5: 1,600 ops (1,600 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
+
+  RESOURCE USAGE
+  Weight memory: 16,972 bytes out of 442,368 bytes total (3.8%)
+  Bias memory:   2 bytes out of 2,048 bytes total (0.1%)
+*/
