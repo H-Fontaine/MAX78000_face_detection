@@ -60,6 +60,7 @@ evaluate :
 
 OUT_SYNTHESIS=synthed_nets
 synthesize :
+	rm -f ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL_NAME)/main.c
 	cd ai8x-synthesis && \
 	. .venv/bin/activate && \
 	python ai8xize.py \
@@ -72,13 +73,14 @@ synthesize :
 		--compact-data \
 		--mexpress --timer 0 --display-checkpoint --overwrite --verbose --device MAX78000 $(ARGS)
 
-camera :
+camera::
 	ln -f -s $(CURDIR)/camera/main.c ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL_NAME)/main.c
 	ln -f -s $(CURDIR)/camera/utils.c ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL_NAME)/utils.c
 	ln -f -s $(CURDIR)/camera/utils.h ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL_NAME)/utils.h
+	ln -f -s $(CURDIR)/camera/project.mk ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL_NAME)/project.mk
 
 
-links :
+links::
 	ln -f -s $(CURDIR)/$(MODEL_FILE) ai8x-training/models/$(MODEL_FILE)
 	ln -f -s $(CURDIR)/$(DATASET_FILE) ai8x-training/datasets/$(DATASET_FILE)
 	ln -f -s $(CURDIR)/$(QAT_POLICY) ai8x-training/policies/$(QAT_POLICY)
@@ -89,10 +91,11 @@ server:
 	cd ai8x-synthesis/openocd/ && \
 	./run-openocd-maxdap
 
-
-flash:
+build:
 	cd ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL_NAME) && \
 	make MAXIM_PATH=$(MAXIM_PATH)
+
+flash: build
 	$(GDB) -x config.gdb ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL_NAME)/build/max78000.elf
 
 listen :
