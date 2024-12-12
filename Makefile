@@ -73,7 +73,7 @@ synthesize :
 		--compact-data \
 		--mexpress --timer 0 --display-checkpoint --overwrite --verbose --device MAX78000 $(ARGS)
 
-camera::
+camera: clean
 	ln -f -s $(CURDIR)/camera/main.c ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL_NAME)/main.c
 	ln -f -s $(CURDIR)/camera/utils.c ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL_NAME)/utils.c
 	ln -f -s $(CURDIR)/camera/utils.h ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL_NAME)/utils.h
@@ -94,6 +94,11 @@ server:
 build:
 	cd ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL_NAME) && \
 	make MAXIM_PATH=$(MAXIM_PATH)
+
+clean:
+	cd ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL_NAME) && \
+	make clean MAXIM_PATH=$(MAXIM_PATH)
+
 
 flash: build
 	$(GDB) -x config.gdb ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL_NAME)/build/max78000.elf
