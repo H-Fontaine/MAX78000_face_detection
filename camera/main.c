@@ -25,7 +25,7 @@ volatile uint32_t cnn_time; // Stopwatch
 If BUTTON is defined, you'll need to push PB1 to capture an image frame.  Otherwise, images
 will be captured continuously.
 */
-#define BUTTON
+//#define BUTTON
 
 #define CAMERA_FREQ (8330000)
 
@@ -95,12 +95,21 @@ void process_img(void)
 
     printf("Classification results:\n");
     int digs, tens;
+    int max_digs = 0;
+    int max_tens = 0;
+    int class = -1;
     for (int i = 0; i < CNN_NUM_OUTPUTS; i++) {
         digs = (1000 * ml_softmax[i] + 0x4000) >> 15;
         tens = digs % 10;
         digs = digs / 10;
+        if (digs > max_digs || (digs == max_digs && tens > max_tens)) {
+            max_digs = digs;
+            max_tens = tens;
+            class = i;
+        }
         printf("[%7d] -> Class %d: %d.%d%%\n", ml_data[i], i, digs, tens);
     }
+    printf("Detected : %d\n", class);
 }
 
 // *****************************************************************************
