@@ -80,6 +80,8 @@ try:
         regex_detected = re.search(r"Detected : (\d+)", line)
         if regex_detected:
             detected_class = int(regex_detected.group(1))
+        line = ser.readline().decode("utf-8")
+        print(line.strip())
 
         # Update the title
         title = ("Face" if detected_class else "No face")  + f" at {percentages[detected_class]}%"

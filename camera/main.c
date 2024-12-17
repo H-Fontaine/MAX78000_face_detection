@@ -111,6 +111,7 @@ void process_img(void)
         printf("[%7d] -> Class %d: %d.%d%%\n", ml_data[i], i, digs, tens);
     }
     printf("Detected : %d\n", class);
+    printf("Approximate inference time: %u us\n", cnn_time);
 }
 
 // *****************************************************************************
@@ -192,7 +193,6 @@ int main(void)
         if (camera_is_image_rcv())
         {
             // Process the image, send it through the UART console.
-        	//printf("New image");
             process_img();
 
             // Prepare for another frame capture.
