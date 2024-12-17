@@ -77,12 +77,13 @@ void process_img(void)
 
     utils_send_img_to_pc(raw, imgLen, w, h, camera_get_pixel_format());
     
-    for (int i = 0; i < h * w; i+=2)
+    for (int i = 0; i < h * w * 2; i+=2)
     {
-        uint32_t r = raw[i] >> 3; r *= 255; r /= 31;
-        uint32_t g = ((raw[i] & 0x07) << 3) | (raw[i+1] >> 5); g *= 255; g /= 63;
-        uint32_t b = raw[i+1] & 0x1F; b *= 255; b /= 31;
-        input_0[i >> 1] = ((uint8_t)r << 16) | ((uint8_t)g << 8) | (uint8_t)b;
+        // Extract colors from RGB565 and convert to signed value
+        uint8_t ur = (raw[i] & 0xF8) ^ 0x80;
+        uint8_t ug = ((raw[i] << 5) | ((raw[i + 1] & 0xE0) >> 3)) ^ 0x80;
+        uint8_t ub = (raw[i + 1] << 3) ^ 0x80;
+        input_0[i/2] = 0x00FFFFFF & ((ub << 16) | (ug << 8) | ur);
     }
 
     load_input(); // Load data input
