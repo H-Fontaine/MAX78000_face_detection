@@ -69,9 +69,10 @@ try:
         # Now, parse the serial data for the class and percentage
         detected_class = None
         percentages = [0, 0]
-        buffer = ser.readline()
+        line = ser.readline()
         for i in range(2):
             line = ser.readline().decode("utf-8")
+            print(line.strip())
             regex_percentage = re.search(r"\[\s*(-?\d+)\] -> Class (\d+): (\d+)\.(\d+)%", line)
             if regex_percentage:
                 percentages[int(regex_percentage.group(2))] = float(f"{regex_percentage.group(3)}.{regex_percentage.group(4)}")
