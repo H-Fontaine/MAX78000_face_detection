@@ -82,7 +82,7 @@ try:
             detected_class = int(regex_detected.group(1))
 
         # Update the title
-        title = f"Class {detected_class} at {percentages[detected_class ]}%"
+        title = ("Face" if detected_class else "No face")  + f" at {percentages[detected_class]}%"
         cv2.setWindowTitle("Image Viewer", title)
 
         # Display the image in the existing window
