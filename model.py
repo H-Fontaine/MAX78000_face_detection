@@ -37,14 +37,14 @@ class FaceNet(nn.Module):
         dim_x //= 2 # 22
         dim_y //= 2 # 22
 
-        self.conv4 = ai8x.FusedAvgPoolConv2dReLU(in_channels=16, out_channels=32, kernel_size=3,
+        self.conv4 = ai8x.FusedMaxPoolConv2dReLU(in_channels=16, out_channels=32, kernel_size=3,
                                                  padding=1, bias=bias, **kwargs)
         # conv padding 1 -> no change in dimensions
         # pooling, padding 0 -> dimensions halved
         dim_x //= 2 # 11
         dim_y //= 2 # 11
 
-        self.conv5 = ai8x.FusedAvgPoolConv2dReLU(in_channels=32, out_channels=32, kernel_size=3,
+        self.conv5 = ai8x.FusedMaxPoolConv2dReLU(in_channels=32, out_channels=32, kernel_size=3,
                                                  padding=1, bias=bias, **kwargs)
         # conv padding 1 -> no change in dimensions
         # pooling, padding 0 -> dimensions halved

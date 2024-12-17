@@ -34,7 +34,7 @@ layers:
 
 # ++++ Layer 3 ++++ # FusedAvgPoolConv2dReLU(in_channels=16, out_channels=32, kernel_size=3, padding=1, pool_size=2, pool_stride=2)
   - pad: 1
-    avg_pool: 2
+    max_pool: 2
     pool_stride: 2
     activate: ReLU
     out_offset: 0x4000
@@ -43,7 +43,7 @@ layers:
 
 # ++++ Layer 4 ++++ # FusedAvgPoolConv2dReLU(in_channels=32, out_channels=32, kernel_size=3, padding=1, pool_size=2, pool_stride=2)
   - pad: 1
-    avg_pool: 2
+    max_pool: 2
     pool_stride: 2
     activate: ReLU
     out_offset: 0x0

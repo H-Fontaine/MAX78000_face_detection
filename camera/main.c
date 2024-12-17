@@ -169,6 +169,7 @@ int main(void)
 
     MXC_Delay(SEC(2));
 
+    // Initialize the CNN, clock at 50 MHz
     cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
 
     printf("\n*** CNN CONFIGURATION ***\n");
@@ -211,12 +212,12 @@ int main(void)
 
 /*
   SUMMARY OF OPS
-  Hardware: 2,857,344 ops (2,741,056 macc; 105,344 comp; 10,944 add; 0 mul; 0 bitwise)
+  Hardware: 2,857,344 ops (2,741,056 macc; 116,288 comp; 0 add; 0 mul; 0 bitwise)
     Layer 0: 867,328 ops (836,352 macc; 30,976 comp; 0 add; 0 mul; 0 bitwise)
     Layer 1: 604,032 ops (557,568 macc; 46,464 comp; 0 add; 0 mul; 0 bitwise)
     Layer 2: 580,800 ops (557,568 macc; 23,232 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 3: 569,184 ops (557,568 macc; 3,872 comp; 7,744 add; 0 mul; 0 bitwise)
-    Layer 4: 234,400 ops (230,400 macc; 800 comp; 3,200 add; 0 mul; 0 bitwise)
+    Layer 3: 569,184 ops (557,568 macc; 11,616 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 4: 234,400 ops (230,400 macc; 4,000 comp; 0 add; 0 mul; 0 bitwise)
     Layer 5: 1,600 ops (1,600 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
 
   RESOURCE USAGE
