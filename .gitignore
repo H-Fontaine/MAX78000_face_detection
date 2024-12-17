@@ -1,4 +1,5 @@
-/datasets
+/datasets/classification
+/datasets/widerface
 /results
 used_nodes.txt
 /ai8x-training
