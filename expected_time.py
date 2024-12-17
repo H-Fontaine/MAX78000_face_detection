@@ -20,7 +20,7 @@ PROC_PER_LAYER = [3, 4, 8, 16, 32, 32]
 CNN_LAYERS = [1,1,1,1,0,0]
 KERNEL_SIZE = 3*3
 
-CNN_CLOCK = 50e6 # 100 MHz
+CNN_CLOCK = 50e6 # 50 MHz
 
 def get_opts_per_layer(ops_output: str) -> Dict[str, List[int]]:
     """Parse the output of the operations and return the number of operations per layer."""
