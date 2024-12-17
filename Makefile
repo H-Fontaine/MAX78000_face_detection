@@ -4,9 +4,9 @@ MAXIM_PATH=$(HOME)/MaximSDK
 PREFIX=arm-none-eabi-
 GDB=$(PREFIX)gdb
 
-DATASET_FILE=dataset.py
-DATASET_NAME=face_classification
-DATASET_PATH=datasets/classification
+DATASET_FILE=homemade_dataset.py
+DATASET_NAME=homemade_classification
+DATASET_PATH=datasets/homemade
 MODEL_FILE=model.py
 MODEL_NAME=facenet
 CONFIG_FILE=config.yaml
@@ -14,8 +14,8 @@ QAT_POLICY=quantization.yaml
 SCHEDULER_POLICY=schedule.yaml
 
 LEARNING_RATE=0.001
-NB_EPOCHS=10
-BATCH_SIZE=40
+NB_EPOCHS=50
+BATCH_SIZE=20
 OPTIMIZER=adam
 
 
