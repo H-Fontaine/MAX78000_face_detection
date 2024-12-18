@@ -74,6 +74,8 @@ synthesize :
 		--softmax \
 		--compact-data \
 		--mexpress --timer 0 --display-checkpoint --overwrite --verbose --device MAX78000 $(ARGS)
+	cd ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL) && \
+	tail -n 100 main.c | sed -n '/\/\*/,/\*\//{/\/\*/d;/\*\//d;p}' > $(CURDIR)/models/$(MODEL)/ops.txt
 
 camera: clean
 	ln -f -s $(CURDIR)/camera/main.c ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL)/main.c

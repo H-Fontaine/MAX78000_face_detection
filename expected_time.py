@@ -1,25 +1,11 @@
 import re
+import os
 from typing import List, Dict
 
-OPS_OUTPUT = """
-  SUMMARY OF OPS
-  Hardware: 2,857,344 ops (2,741,056 macc; 116,288 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 0: 867,328 ops (836,352 macc; 30,976 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 1: 604,032 ops (557,568 macc; 46,464 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 2: 580,800 ops (557,568 macc; 23,232 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 3: 569,184 ops (557,568 macc; 11,616 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 4: 234,400 ops (230,400 macc; 4,000 comp; 0 add; 0 mul; 0 bitwise)
-    Layer 5: 1,600 ops (1,600 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
-
-  RESOURCE USAGE
-  Weight memory: 16,972 bytes out of 442,368 bytes total (3.8%)
-  Bias memory:   2 bytes out of 2,048 bytes total (0.1%)
-"""
-
+MODEL="facenet_v2"
 PROC_PER_LAYER = [3, 4, 8, 16, 32, 32]
 CNN_LAYERS = [1,1,1,1,0,0]
 KERNEL_SIZE = 3*3
-
 CNN_CLOCK = 50e6 # 50 MHz
 
 def get_opts_per_layer(ops_output: str) -> Dict[str, List[int]]:
@@ -73,8 +59,9 @@ def get_total_time(time_per_layer: List[float]) -> float:
     """Calculate the total time for the entire CNN"""
     return sum(time_per_layer)
 
-
-ops_per_layer = get_opts_per_layer(OPS_OUTPUT)
+# open the file and read the operations
+ops_file =  os.read(os.open(f"models/{MODEL}/ops.txt", os.O_RDONLY), 10000).decode("utf-8")
+ops_per_layer = get_opts_per_layer(ops_file)
 cycles_per_layer = get_cycles_per_layer(ops_per_layer, PROC_PER_LAYER, KERNEL_SIZE, CNN_LAYERS)
 time_per_layer = get_time_per_layer(cycles_per_layer, CNN_CLOCK)
 total_time = get_total_time(time_per_layer)
