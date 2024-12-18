@@ -43,6 +43,7 @@ def get_opts_per_layer(ops_output: str) -> Dict[str, List[int]]:
     return ops_per_layer
 
 
+
 def get_cycles_per_layer(ops_per_layer: Dict[str, List[int]], proc_per_layer: List[int], kernel_size: int, is_cnn_layer: List[int]) -> List[float]:
     """Calculate the time per layer for the entire CNN"""
     cycles_per_layer = [0] * len(ops_per_layer["macc"])
@@ -57,6 +58,8 @@ def get_cycles_per_layer(ops_per_layer: Dict[str, List[int]], proc_per_layer: Li
         cycles_per_layer[i] += ops_per_layer["bitwise"][i] / proc_per_layer[i]
     return cycles_per_layer
 
+
+
 def get_time_per_layer(cycles_per_layer: List[float], clock: float) -> List[float]:
     """Calculate the time per layer for the entire CNN"""
     time_per_layer = [0] * len(cycles_per_layer)
@@ -65,16 +68,18 @@ def get_time_per_layer(cycles_per_layer: List[float], clock: float) -> List[floa
     return time_per_layer
 
 
+
 def get_total_time(time_per_layer: List[float]) -> float:
     """Calculate the total time for the entire CNN"""
     return sum(time_per_layer)
 
 
 ops_per_layer = get_opts_per_layer(OPS_OUTPUT)
-print(f"Operations per layer: {ops_per_layer}")
 cycles_per_layer = get_cycles_per_layer(ops_per_layer, PROC_PER_LAYER, KERNEL_SIZE, CNN_LAYERS)
-print(f"Cycles per layer: {cycles_per_layer}")
 time_per_layer = get_time_per_layer(cycles_per_layer, CNN_CLOCK)
-print(f"Time per layer: {time_per_layer}")
 total_time = get_total_time(time_per_layer)
+
+print(f"Operations per layer: {ops_per_layer}")
+print(f"Cycles per layer: {cycles_per_layer}")
+print(f"Time per layer: {time_per_layer}")
 print(f"Total time: {total_time * 1e6} us")
