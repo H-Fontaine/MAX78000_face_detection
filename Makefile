@@ -11,7 +11,7 @@ GDB=$(PREFIX)gdb
 
 # Dataset and model names
 DATASET=classification
-MODEL=facenet_v2
+MODEL=facenet_v1
 
 # Training variables
 LEARNING_RATE=0.001
@@ -76,6 +76,10 @@ synthesize :
 		--mexpress --timer 0 --display-checkpoint --overwrite --verbose --device MAX78000 $(ARGS)
 	cd ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL) && \
 	tail -n 100 main.c | sed -n '/\/\*/,/\*\//{/\/\*/d;/\*\//d;p}' > $(CURDIR)/models/$(MODEL)/ops.txt
+	$(MAKE) time_preview
+
+time_preview :
+	conda run -n mlmc python expected_time.py $(MODEL)
 
 camera: clean
 	ln -f -s $(CURDIR)/camera/main.c ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL)/main.c
