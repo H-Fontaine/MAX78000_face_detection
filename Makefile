@@ -1,26 +1,28 @@
-ARGS= $(filter-out $@,$(MAKECMDGOALS))
+# Defaults names for the files
+CONFIG_FILE=config.yaml
+QAT_POLICY=quantization.yaml
+SCHEDULER_POLICY=schedule.yaml
+MODEL_FILE=model.py
 
+# Compilation variables
 MAXIM_PATH=$(HOME)/MaximSDK
 PREFIX=arm-none-eabi-
 GDB=$(PREFIX)gdb
 
-DATASET_FILE=homemade_dataset.py
-DATASET_NAME=homemade_classification
-DATASET_PATH=datasets/homemade
-MODEL_FILE=model.py
-MODEL_NAME=facenet
-CONFIG_FILE=config.yaml
-QAT_POLICY=quantization.yaml
-SCHEDULER_POLICY=schedule.yaml
+# Dataset and model names
+DATASET=homemade
+MODEL=facenet_v2
 
+# Training variables
 LEARNING_RATE=0.001
 NB_EPOCHS=50
 BATCH_SIZE=20
 OPTIMIZER=adam
 
+# Paths to the files
+DATASET_PATH=datasets/$(DATASET)
 
-
-train :
+train : links
 	cd ai8x-training && \
 	. .venv/bin/activate && \
 	python train.py \
@@ -30,14 +32,14 @@ train :
 		--batch-size $(BATCH_SIZE) \
 		--compress policies/$(SCHEDULER_POLICY) \
 		--qat-policy policies/$(QAT_POLICY) \
-		--model $(MODEL_NAME) \
-		--dataset $(DATASET_NAME) \
+		--model $(MODEL) \
+		--dataset $(DATASET) \
 		--data ../$(DATASET_PATH) \
 		--confusion \
 		--deterministic \
 		--param-hist --pr-curves --embedding --device MAX78000 $(ARGS)
 
-QAT_OUT=$(MODEL_NAME)_trained-q.pth.tar
+QAT_OUT=$(MODEL)_trained-q.pth.tar
 quantize : #quantize the last trained model
 	cd ai8x-synthesis && \
 	. .venv/bin/activate && \
@@ -49,8 +51,8 @@ evaluate :
 	cd ai8x-training && \
 	. .venv/bin/activate && \
 	python train.py \
-		--model $(MODEL_NAME) \
-		--dataset $(DATASET_NAME) \
+		--model $(MODEL) \
+		--dataset $(DATASET) \
 		--data ../$(DATASET_PATH) \
 		--exp-load-weights-from ../ai8x-synthesis/trained/$(QAT_OUT) \
 		--device MAX78000 \
@@ -60,32 +62,32 @@ evaluate :
 
 OUT_SYNTHESIS=synthed_nets
 synthesize :
-	rm -f ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL_NAME)/main.c
+	rm -f ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL)/main.c
 	cd ai8x-synthesis && \
 	. .venv/bin/activate && \
 	python ai8xize.py \
 		--test-dir $(OUT_SYNTHESIS) \
-		--prefix $(MODEL_NAME) \
+		--prefix $(MODEL) \
 		--checkpoint-file trained/$(QAT_OUT) \
 		--config-file networks/$(CONFIG_FILE) \
-		--sample-input ../ai8x-training/sample_$(DATASET_NAME).npy \
+		--sample-input ../ai8x-training/sample_$(DATASET).npy \
 		--softmax \
 		--compact-data \
 		--mexpress --timer 0 --display-checkpoint --overwrite --verbose --device MAX78000 $(ARGS)
 
 camera: clean
-	ln -f -s $(CURDIR)/camera/main.c ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL_NAME)/main.c
-	ln -f -s $(CURDIR)/camera/utils.c ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL_NAME)/utils.c
-	ln -f -s $(CURDIR)/camera/utils.h ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL_NAME)/utils.h
-	ln -f -s $(CURDIR)/camera/project.mk ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL_NAME)/project.mk
+	ln -f -s $(CURDIR)/camera/main.c ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL)/main.c
+	ln -f -s $(CURDIR)/camera/utils.c ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL)/utils.c
+	ln -f -s $(CURDIR)/camera/utils.h ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL)/utils.h
+	ln -f -s $(CURDIR)/camera/project.mk ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL)/project.mk
 
 
-links::
-	ln -f -s $(CURDIR)/$(MODEL_FILE) ai8x-training/models/$(MODEL_FILE)
-	ln -f -s $(CURDIR)/$(DATASET_FILE) ai8x-training/datasets/$(DATASET_FILE)
-	ln -f -s $(CURDIR)/$(QAT_POLICY) ai8x-training/policies/$(QAT_POLICY)
-	ln -f -s $(CURDIR)/$(SCHEDULER_POLICY) ai8x-training/policies/$(SCHEDULER_POLICY)
-	ln -f -s $(CURDIR)/$(CONFIG_FILE) ai8x-synthesis/networks/$(CONFIG_FILE)
+links:
+	ln -f -s $(CURDIR)/models/$(MODEL)/$(MODEL_FILE) ai8x-training/models/$(MODEL).py
+	ln -f -s $(CURDIR)/models/$(MODEL)/$(QAT_POLICY) ai8x-training/policies/$(QAT_POLICY)
+	ln -f -s $(CURDIR)/models/$(MODEL)/$(SCHEDULER_POLICY) ai8x-training/policies/$(SCHEDULER_POLICY)
+	ln -f -s $(CURDIR)/models/$(MODEL)/$(CONFIG_FILE) ai8x-synthesis/networks/$(CONFIG_FILE)
+	ln -f -s $(CURDIR)/datasets/$(DATASET)_dataset.py ai8x-training/datasets/$(DATASET)_dataset.py
 
 server:
 	cd ai8x-synthesis/openocd/ && \

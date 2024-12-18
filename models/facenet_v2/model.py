@@ -72,9 +72,9 @@ class FaceNet(nn.Module):
         return x
 
 
-def facenet(pretrained=False, **kwargs):
+def facenet_v2(pretrained=False, **kwargs):
     """
-    Constructs a MemeNet model.
+    Constructs a model.
     """
     assert not pretrained
     return FaceNet(**kwargs)
@@ -84,7 +84,7 @@ Network description
 """
 models = [
     {
-        'name': 'facenet',
+        'name': 'facenet_v2',
         'min_input': 1,
         'dim': 2,
     }
