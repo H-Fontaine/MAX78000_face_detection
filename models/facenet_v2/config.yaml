@@ -2,11 +2,11 @@
 # CHW configuration for memenet
 
 arch: facenet_v2
-dataset: homemade
+dataset: classification
 
 # Define layer parameters in order of the layer sequence
 layers:
-# ++++ Layer 0 ++++ FusedMaxPoolConv2dReLU(in_channels=3, out_channels=4, kernel_size=3, padding=1, pool_size=2, pool_stride=2)
+# ++++ Layer 0 ++++ FusedMaxPoolConv2dReLU(in_channels=3, out_channels=8, kernel_size=3, padding=1, pool_size=2, pool_stride=2)
   - pad: 1
     activate: ReLU
     out_offset: 0x0
@@ -14,46 +14,55 @@ layers:
     data_format: HWC
     op: conv2d
   
-# ++++ Layer 1 ++++ # FusedMaxPoolConv2dReLU(in_channels=4, out_channel=8, kernel_size=3, padding=1, pool_size=2, pool_stride=2)
+# ++++ Layer 1 ++++ # FusedMaxPoolConv2dReLU(in_channels=8, out_channel=16, kernel_size=3, padding=1, pool_size=2, pool_stride=2)
   - pad: 1
     max_pool: 2
     pool_stride: 2
     activate: ReLU
     out_offset: 0x4000
-    processors: 0xf000.0000.0000.0000
+    processors: 0xff00.0000.0000.0000
     op: conv2d
 
-# ++++ Layer 2 ++++ # FusedMaxPoolConv2dReLU(in_channels=8, out_channels=16, kernel_size=3, padding=1, pool_size=2, pool_stride=2)
+# ++++ Layer 2 ++++ # FusedMaxPoolConv2dReLU(in_channels=16, out_channels=32, kernel_size=3, padding=1, pool_size=2, pool_stride=2)
   - pad: 1
     max_pool: 2
     pool_stride: 2
     activate: ReLU
     out_offset: 0x0
-    processors: 0x0000.0000.0000.00ff
+    processors: 0x0000.0000.0000.ffff
     op: conv2d
 
-# ++++ Layer 3 ++++ # FusedAvgPoolConv2dReLU(in_channels=16, out_channels=32, kernel_size=3, padding=1, pool_size=2, pool_stride=2)
+# ++++ Layer 3 ++++ # FusedAvgPoolConv2dReLU(in_channels=32, out_channels=64, kernel_size=3, padding=1, pool_size=2, pool_stride=2)
   - pad: 1
     max_pool: 2
     pool_stride: 2
     activate: ReLU
     out_offset: 0x4000
-    processors: 0xffff.0000.0000.0000
+    processors: 0xffff.ffff.0000.0000
     op: conv2d
 
-# ++++ Layer 4 ++++ # FusedAvgPoolConv2dReLU(in_channels=32, out_channels=32, kernel_size=3, padding=1, pool_size=2, pool_stride=2)
+# ++++ Layer 4 ++++ # FusedAvgPoolConv2dReLU(in_channels=64, out_channels=64, kernel_size=3, padding=1, pool_size=2, pool_stride=2)
   - pad: 1
     max_pool: 2
     pool_stride: 2
     activate: ReLU
     out_offset: 0x0
-    processors: 0x0000.0000.ffff.ffff
+    processors: 0xffff.ffff.ffff.ffff
+    op: conv2d
+
+# ++++ Layer 5 ++++ # FusedAvgPoolConv2dReLU(in_channels=64, out_channels=64, kernel_size=3, padding=1, pool_size=2, pool_stride=2)
+  - pad: 1
+    max_pool: 2
+    pool_stride: 2
+    activate: ReLU
+    out_offset: 0x4000
+    processors: 0xffff.ffff.ffff.ffff
     op: conv2d
 
 
-# ++++ Layer 5 ++++ # Linear(800, 2, wide=True, bias=True)
+# ++++ Layer 5 ++++ # Linear(256, 2, wide=True, bias=True)
   - op: mlp
     flatten: True
-    out_offset: 0x4000
+    out_offset: 0x0000
     output_width: 32
-    processors: 0xffff.ffff.0000.0000
+    processors: 0xffff.ffff.ffff.ffff

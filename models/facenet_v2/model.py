@@ -20,38 +20,45 @@ class FaceNet(nn.Module):
         dim_x, dim_y = dimensions
         assert dim_x == dim_y == 88 # Only square supported
 
-        self.conv1 = ai8x.FusedConv2dReLU(in_channels=num_channels, out_channels=4, kernel_size=3,
+        self.conv1 = ai8x.FusedConv2dReLU(in_channels=num_channels, out_channels=8, kernel_size=3,
                                           padding=1, bias=bias, **kwargs)
         # padding 1 -> no change in dimensions
 
-        self.conv2 = ai8x.FusedMaxPoolConv2dReLU(in_channels=4, out_channels=8, kernel_size=3,
+        self.conv2 = ai8x.FusedMaxPoolConv2dReLU(in_channels=8, out_channels=16, kernel_size=3,
                                                  padding=1, bias=bias, **kwargs)
         # conv padding 1 -> no change in dimensions 
         # pooling, padding 0 -> dimensions halved
         dim_x //= 2 # 44
         dim_y //= 2 # 44
 
-        self.conv3 = ai8x.FusedMaxPoolConv2dReLU(in_channels=8, out_channels=16, kernel_size=3,
+        self.conv3 = ai8x.FusedMaxPoolConv2dReLU(in_channels=16, out_channels=32, kernel_size=3,
                                                  padding=1, bias=bias, **kwargs)
         # pooling, padding 0 -> dimensions halved
         dim_x //= 2 # 22
         dim_y //= 2 # 22
 
-        self.conv4 = ai8x.FusedMaxPoolConv2dReLU(in_channels=16, out_channels=32, kernel_size=3,
+        self.conv4 = ai8x.FusedMaxPoolConv2dReLU(in_channels=32, out_channels=64, kernel_size=3,
                                                  padding=1, bias=bias, **kwargs)
         # conv padding 1 -> no change in dimensions
         # pooling, padding 0 -> dimensions halved
         dim_x //= 2 # 11
         dim_y //= 2 # 11
 
-        self.conv5 = ai8x.FusedMaxPoolConv2dReLU(in_channels=32, out_channels=32, kernel_size=3,
+        self.conv5 = ai8x.FusedMaxPoolConv2dReLU(in_channels=64, out_channels=64, kernel_size=3,
                                                  padding=1, bias=bias, **kwargs)
         # conv padding 1 -> no change in dimensions
         # pooling, padding 0 -> dimensions halved
         dim_x //= 2 # 5
         dim_y //= 2 # 5
 
-        self.fcx = ai8x.Linear(dim_x*dim_y*32, num_classes, wide=True, bias=True, **kwargs)
+        self.conv6 = ai8x.FusedMaxPoolConv2dReLU(in_channels=64, out_channels=64, kernel_size=3,
+                                                 padding=1, bias=bias, **kwargs)
+        # conv padding 1 -> no change in dimensions
+        # pooling, padding 0 -> dimensions halved
+        dim_x //= 2 # 2
+        dim_y //= 2 # 2
+
+        self.fcx = ai8x.Linear(dim_x*dim_y*64, num_classes, wide=True, bias=True, **kwargs)
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
@@ -67,6 +74,7 @@ class FaceNet(nn.Module):
         x = self.conv3(x)
         x = self.conv4(x)
         x = self.conv5(x)
+        x = self.conv6(x)
         x = x.view(x.size(0), -1)
         x = self.fcx(x)
         return x

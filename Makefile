@@ -10,13 +10,13 @@ PREFIX=arm-none-eabi-
 GDB=$(PREFIX)gdb
 
 # Dataset and model names
-DATASET=homemade
+DATASET=classification
 MODEL=facenet_v2
 
 # Training variables
 LEARNING_RATE=0.001
-NB_EPOCHS=50
-BATCH_SIZE=20
+NB_EPOCHS=15
+BATCH_SIZE=40
 OPTIMIZER=adam
 
 # Paths to the files
