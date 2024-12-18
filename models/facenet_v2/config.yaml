@@ -60,7 +60,7 @@ layers:
     op: conv2d
 
 
-# ++++ Layer 5 ++++ # Linear(256, 2, wide=True, bias=True)
+# ++++ Layer 6 ++++ # Linear(256, 2, wide=True, bias=True)
   - op: mlp
     flatten: True
     out_offset: 0x0000
