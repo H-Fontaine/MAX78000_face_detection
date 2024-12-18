@@ -96,16 +96,16 @@ server:
 	./run-openocd-maxdap
 
 build:
-	cd ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL_NAME) && \
+	cd ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL) && \
 	make MAXIM_PATH=$(MAXIM_PATH)
 
 clean:
-	cd ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL_NAME) && \
+	cd ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL) && \
 	make clean MAXIM_PATH=$(MAXIM_PATH)
 
 
 flash: build
-	$(GDB) -x config.gdb ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL_NAME)/build/max78000.elf
+	$(GDB) -x config.gdb ai8x-synthesis/$(OUT_SYNTHESIS)/$(MODEL)/build/max78000.elf
 
 listen :
 	clear
