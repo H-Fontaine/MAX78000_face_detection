@@ -1,9 +1,9 @@
-2024-12-18 10:01:05,304 - Log file for this run: /home/hugo/Nextcloud/Ecole/ETH_Zurich/Cours/Machine_learning_on_microcontrollers/project/ai8x-training/logs/2024.12.18-100105/2024.12.18-100105.log
-2024-12-18 10:01:05,304 - The open file limit is 1024. Please raise the limit (see documentation).
-2024-12-18 10:01:05,304 - Configuring device: MAX78000, simulate=True.
-2024-12-18 10:01:05,306 - No CUDA, ROCm, or MPS hardware acceleration, training will be slow
-2024-12-18 10:01:05,319 - => loading checkpoint ../ai8x-synthesis/trained/facenet_v2_trained-q.pth.tar
-2024-12-18 10:01:05,323 - => Checkpoint contents:
+2024-12-18 11:13:38,730 - Log file for this run: /home/hugo/Nextcloud/Ecole/ETH_Zurich/Cours/Machine_learning_on_microcontrollers/project/ai8x-training/logs/2024.12.18-111338/2024.12.18-111338.log
+2024-12-18 11:13:38,730 - The open file limit is 1024. Please raise the limit (see documentation).
+2024-12-18 11:13:38,730 - Configuring device: MAX78000, simulate=True.
+2024-12-18 11:13:38,734 - No CUDA, ROCm, or MPS hardware acceleration, training will be slow
+2024-12-18 11:13:38,749 - => loading checkpoint ../ai8x-synthesis/trained/facenet_v2_trained-q.pth.tar
+2024-12-18 11:13:38,752 - => Checkpoint contents:
 +----------------------+-------------+------------+
 | Key                  | Type        | Value      |
 |----------------------+-------------+------------|
@@ -16,7 +16,7 @@
 | state_dict           | OrderedDict |            |
 +----------------------+-------------+------------+
 
-2024-12-18 10:01:05,324 - => Checkpoint['extras'] contents:
+2024-12-18 11:13:38,753 - => Checkpoint['extras'] contents:
 +-----------------+--------+-------------------+
 | Key             | Type   | Value             |
 |-----------------+--------+-------------------|
@@ -28,22 +28,22 @@
 | current_top1    | float  | 88.54489164086688 |
 +-----------------+--------+-------------------+
 
-2024-12-18 10:01:05,324 - Loaded compression schedule from checkpoint (epoch 6)
-2024-12-18 10:01:05,327 - => loaded 'state_dict' from checkpoint '../ai8x-synthesis/trained/facenet_v2_trained-q.pth.tar'
-2024-12-18 10:01:05,328 - Optimizer Type: <class 'torch.optim.sgd.SGD'>
-2024-12-18 10:01:05,329 - Optimizer Args: {'lr': 0.1, 'momentum': 0.9, 'dampening': 0, 'weight_decay': 0.0001, 'nesterov': False, 'maximize': False, 'foreach': None, 'differentiable': False, 'fused': None}
-2024-12-18 10:01:05,335 - torch.compile() not available, using "eager" mode
-2024-12-18 10:01:05,336 - Dataset sizes:
+2024-12-18 11:13:38,753 - Loaded compression schedule from checkpoint (epoch 6)
+2024-12-18 11:13:38,756 - => loaded 'state_dict' from checkpoint '../ai8x-synthesis/trained/facenet_v2_trained-q.pth.tar'
+2024-12-18 11:13:38,757 - Optimizer Type: <class 'torch.optim.sgd.SGD'>
+2024-12-18 11:13:38,757 - Optimizer Args: {'lr': 0.1, 'momentum': 0.9, 'dampening': 0, 'weight_decay': 0.0001, 'nesterov': False, 'maximize': False, 'foreach': None, 'differentiable': False, 'fused': None}
+2024-12-18 11:13:38,765 - torch.compile() not available, using "eager" mode
+2024-12-18 11:13:38,765 - Dataset sizes:
 	test=892
-2024-12-18 10:01:05,336 - --- test (ckpt) ---------------------
-2024-12-18 10:01:05,336 - 892 samples (256 per mini-batch)
-2024-12-18 10:01:05,772 - ==> Saving sample at index 0 to sample_classification.npy
-2024-12-18 10:01:06,398 - Test: [    4/    4]    Loss 0.537608    Top1 85.762332    
-2024-12-18 10:01:06,417 - ==> Top1: 85.762    Loss: 0.538
+2024-12-18 11:13:38,765 - --- test (ckpt) ---------------------
+2024-12-18 11:13:38,765 - 892 samples (256 per mini-batch)
+2024-12-18 11:13:39,190 - ==> Saving sample at index 0 to sample_classification.npy
+2024-12-18 11:13:39,819 - Test: [    4/    4]    Loss 0.537608    Top1 85.762332    
+2024-12-18 11:13:39,849 - ==> Top1: 85.762    Loss: 0.538
 
-2024-12-18 10:01:06,418 - ==> Confusion:
+2024-12-18 11:13:39,849 - ==> Confusion:
 [[387  59]
  [ 68 378]]
 
-2024-12-18 10:01:06,419 - 
-2024-12-18 10:01:06,419 - Log file for this run: /home/hugo/Nextcloud/Ecole/ETH_Zurich/Cours/Machine_learning_on_microcontrollers/project/ai8x-training/logs/2024.12.18-100105/2024.12.18-100105.log
+2024-12-18 11:13:39,852 - 
+2024-12-18 11:13:39,852 - Log file for this run: /home/hugo/Nextcloud/Ecole/ETH_Zurich/Cours/Machine_learning_on_microcontrollers/project/ai8x-training/logs/2024.12.18-111338/2024.12.18-111338.log

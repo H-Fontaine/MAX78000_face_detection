@@ -11,7 +11,7 @@ GDB=$(PREFIX)gdb
 
 # Dataset and model names
 DATASET=classification
-MODEL=facenet_v1
+MODEL=facenet_v2
 
 # Training variables
 LEARNING_RATE=0.001
@@ -59,6 +59,8 @@ evaluate :
 		--save-sample 0 \
 		--8-bit-mode \
 		--confusion --evaluate $(ARGS)
+	cd ai8x-training/latest_log_dir && find . -type f -name '*.log' -exec cp {} $(CURDIR)/models/$(MODEL)/evaluation.log \;
+	
 
 OUT_SYNTHESIS=synthed_nets
 synthesize :
