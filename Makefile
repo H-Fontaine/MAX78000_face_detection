@@ -10,12 +10,12 @@ PREFIX=arm-none-eabi-
 GDB=$(PREFIX)gdb
 
 # Dataset and model names
-DATASET=classification_folded
-MODEL=facenet_v4
+DATASET=classification
+MODEL=facenet_v6
 
 # Training variables
 LEARNING_RATE=0.001
-NB_EPOCHS=20
+NB_EPOCHS=12
 BATCH_SIZE=40
 OPTIMIZER=adam
 
