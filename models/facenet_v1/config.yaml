@@ -2,7 +2,7 @@
 # CHW configuration for memenet
 
 arch: facenet_v1
-dataset: homemade
+dataset: classification
 
 # Define layer parameters in order of the layer sequence
 layers:
