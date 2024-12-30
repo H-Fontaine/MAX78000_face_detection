@@ -97,6 +97,9 @@ links:
 	ln -f -s $(CURDIR)/models/$(MODEL)/$(CONFIG_FILE) ai8x-synthesis/networks/$(CONFIG_FILE)
 	ln -f -s $(CURDIR)/datasets/$(DATASET)_dataset.py ai8x-training/datasets/$(DATASET)_dataset.py
 
+demo:
+	conda run -n mlmc python demo.py
+
 server:
 	cd ai8x-synthesis/openocd/ && \
 	./run-openocd-maxdap
