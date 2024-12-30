@@ -1,0 +1,12 @@
+  SUMMARY OF OPS
+  Hardware: 372,504 ops (343,232 macc; 29,272 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 0: 216,832 ops (209,088 macc; 7,744 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 1: 46,464 ops (34,848 macc; 11,616 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 2: 40,656 ops (34,848 macc; 5,808 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 3: 37,752 ops (34,848 macc; 2,904 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 4: 30,000 ops (28,800 macc; 1,200 comp; 0 add; 0 mul; 0 bitwise)
+    Layer 5: 800 ops (800 macc; 0 comp; 0 add; 0 mul; 0 bitwise)
+
+  RESOURCE USAGE
+  Weight memory: 2,357 bytes out of 442,368 bytes total (0.5%)
+  Bias memory:   2 bytes out of 2,048 bytes total (0.1%)
