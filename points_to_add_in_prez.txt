@@ -1,0 +1,22 @@
+1_ Normalizing Input Data :
+    For training, input data is expected to be in the range $[–\frac{128}{128}, +\frac{127}{128}]$. When
+    evaluating quantized weights, or when running on hardware, input data is instead expected to be
+    in the native MAX78000/MAX78002 range of $[–128, +127]$. Conversely, the majority of PyTorch
+    datasets are PIL images of range $[0, 1]$. The respective data loaders therefore call the
+    ai8x.normalize() function, which expects an input of 0 to 1 and normalizes the data,
+    automatically switching between the two supported data ranges.
+
+    On the other hand, a different sensor may produce unsigned data values in the full 8-bit range $[0,
+    255]$. This range must be mapped to $[–128, +127]$ to match hardware and the trained model.
+    The mapping can be performed during inference by subtracting 128 from each input byte, but this
+    requires extra (pre-)processing time during inference or while loading data (for example, by using
+    xor 0x808080 ).
+
+    for (int i = 0; i < h * w * 2; i+=2)
+    {
+        // Extract colors from RGB565 and convert to signed value
+        uint8_t ur = (raw[i] & 0xF8) ^ 0x80;
+        uint8_t ug = ((raw[i] << 5) | ((raw[i + 1] & 0xE0) >> 3)) ^ 0x80;
+        uint8_t ub = (raw[i + 1] << 3) ^ 0x80;
+        input_0[i/2] = 0x00FFFFFF & ((ub << 16) | (ug << 8) | ur);
+    }
