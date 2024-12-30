@@ -10,17 +10,17 @@ PREFIX=arm-none-eabi-
 GDB=$(PREFIX)gdb
 
 # Dataset and model names
-DATASET=classification
-MODEL=facenet_v3
+DATASET=classification_folded
+MODEL=facenet_v4
 
 # Training variables
 LEARNING_RATE=0.001
-NB_EPOCHS=15
+NB_EPOCHS=20
 BATCH_SIZE=40
 OPTIMIZER=adam
 
 # Paths to the files
-DATASET_PATH=datasets/$(DATASET)
+DATASET_PATH=datasets/$(word 1, $(subst _, ,$(DATASET)))
 
 train : links
 	cd ai8x-training && \
@@ -40,7 +40,7 @@ train : links
 		--param-hist --pr-curves --embedding --device MAX78000 $(ARGS)
 
 QAT_OUT=$(MODEL)_trained-q.pth.tar
-quantize : #quantize the last trained model
+quantize : #quantize the last /!\QAT/!\ model
 	cd ai8x-synthesis && \
 	. .venv/bin/activate && \
 	LATEST_FOLDER=$$(find ../ai8x-training/logs -type d -exec test -e {}/qat_best.pth.tar \; -print | sort -r | head -n 1) && \
