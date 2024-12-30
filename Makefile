@@ -45,6 +45,7 @@ quantize : #quantize the last trained model
 	. .venv/bin/activate && \
 	LATEST_FOLDER=$$(find ../ai8x-training/logs -type d -exec test -e {}/qat_best.pth.tar \; -print | sort -r | head -n 1) && \
 	python quantize.py $$LATEST_FOLDER/qat_best.pth.tar trained/$(QAT_OUT) \
+		--config-file networks/$(CONFIG_FILE) \
 		--device MAX78000 -v $(ARGS)
 
 evaluate :
