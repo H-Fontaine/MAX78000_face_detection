@@ -1,0 +1,36 @@
+Total time: 157.05 us
+
+Time per layer:
+Layer 1: 79.05 us
+Layer 2: 53.24 us
+Layer 3: 19.00 us
+Layer 4: 5.60 us
+Layer 5: 0.16 us
+
+Cycles per layer:
+Layer 1: 3952.67 cycles
+Layer 2: 2662.00 cycles
+Layer 3: 950.00 cycles
+Layer 4: 280.00 cycles
+Layer 5: 8.00 cycles
+
+Operations per layer:
+Macc: 1_672_704, 139_392, 115_200, 73_728, 512
+Comp: 3_872, 5_808, 2_400, 768, 0
+Add: 0, 0, 0, 0, 0
+Mul: 0, 0, 0, 0, 0
+Bitwise: 0, 0, 0, 0, 0
+
+Processors per layer:
+Layer 1: 48 processors
+Layer 2: 8 processors
+Layer 3: 16 processors
+Layer 4: 32 processors
+Layer 5: 64 processors
+
+CNN layers:
+Layer 1: Yes
+Layer 2: Yes
+Layer 3: Yes
+Layer 4: Yes
+Layer 5: No

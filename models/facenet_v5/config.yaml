@@ -1,0 +1,51 @@
+---
+# CHW configuration for memenet
+
+arch: facenet_v5
+dataset: classification_folded
+
+# Define layer parameters in order of the layer sequence
+layers:
+# ++++ Layer 0 ++++ FusedMaxPoolConv2dReLU(in_channels=3, out_channels=8, kernel_size=3, padding=1, pool_size=2, pool_stride=2)
+  - pad: 1
+    activate: ReLU
+    in_offset: 0x0
+    out_offset: 0x4000
+    in_channels: 48
+    processors: 0x0000.ffff.ffff.ffff
+    data_format: HWC
+    op: conv2d
+  
+# ++++ Layer 1 ++++ # FusedMaxPoolConv2dReLU(in_channels=8, out_channel=16, kernel_size=3, padding=1, pool_size=2, pool_stride=2)
+  - pad: 1
+    max_pool: 2
+    pool_stride: 2
+    out_offset: 0x0
+    activate: ReLU
+    processors: 0x0000.0000.0000.00ff
+    op: conv2d
+
+# ++++ Layer 2 ++++ # FusedMaxPoolConv2dReLU(in_channels=16, out_channels=32, kernel_size=3, padding=1, pool_size=2, pool_stride=2)
+  - pad: 1
+    max_pool: 2
+    pool_stride: 2
+    activate: ReLU
+    out_offset: 0x4000
+    processors: 0xffff.0000.0000.0000
+    op: conv2d
+
+# ++++ Layer 3 ++++ # FusedMaxPoolConv2dReLU(in_channels=16, out_channels=32, kernel_size=3, padding=1, pool_size=2, pool_stride=2)
+  - pad: 1
+    max_pool: 2
+    pool_stride: 2
+    activate: ReLU
+    out_offset: 0x0
+    processors: 0x0000.0000.ffff.ffff
+    op: conv2d
+
+# ++++ Layer 4 ++++ # Linear(256, 2, wide=True, bias=True)
+  - op: mlp
+    flatten: True
+    out_offset: 0x4000
+    output_width: 32
+    processors: 0xffff.ffff.ffff.ffff

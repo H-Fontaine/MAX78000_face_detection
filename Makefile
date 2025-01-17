@@ -11,16 +11,16 @@ GDB=$(PREFIX)gdb
 
 # Dataset and model names
 DATASET=classification
-MODEL=facenet_v2
+MODEL=facenet_v7
 
 # Training variables
 LEARNING_RATE=0.001
-NB_EPOCHS=15
+NB_EPOCHS=12
 BATCH_SIZE=40
 OPTIMIZER=adam
 
 # Paths to the files
-DATASET_PATH=datasets/$(DATASET)
+DATASET_PATH=datasets/$(word 1, $(subst _, ,$(DATASET)))
 
 train : links
 	cd ai8x-training && \
@@ -40,11 +40,12 @@ train : links
 		--param-hist --pr-curves --embedding --device MAX78000 $(ARGS)
 
 QAT_OUT=$(MODEL)_trained-q.pth.tar
-quantize : #quantize the last trained model
+quantize : #quantize the last /!\QAT/!\ model
 	cd ai8x-synthesis && \
 	. .venv/bin/activate && \
 	LATEST_FOLDER=$$(find ../ai8x-training/logs -type d -exec test -e {}/qat_best.pth.tar \; -print | sort -r | head -n 1) && \
 	python quantize.py $$LATEST_FOLDER/qat_best.pth.tar trained/$(QAT_OUT) \
+		--config-file networks/$(CONFIG_FILE) \
 		--device MAX78000 -v $(ARGS)
 
 evaluate :
@@ -96,6 +97,9 @@ links:
 	ln -f -s $(CURDIR)/models/$(MODEL)/$(SCHEDULER_POLICY) ai8x-training/policies/$(SCHEDULER_POLICY)
 	ln -f -s $(CURDIR)/models/$(MODEL)/$(CONFIG_FILE) ai8x-synthesis/networks/$(CONFIG_FILE)
 	ln -f -s $(CURDIR)/datasets/$(DATASET)_dataset.py ai8x-training/datasets/$(DATASET)_dataset.py
+
+demo:
+	conda run -n mlmc python demo.py
 
 server:
 	cd ai8x-synthesis/openocd/ && \

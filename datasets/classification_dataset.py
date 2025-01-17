@@ -46,13 +46,14 @@ class ClassificationDataset(Dataset):
 """
 Dataloader function
 """
-def get_datasets(data, load_train=False, load_test=False):
+def get_datasets(data, load_train=False, load_test=False, fold_ratio=1):
    
     (data_dir, args) = data
     #data_dir = data
 
     transform = transforms.Compose([
-        ai8x.normalize(args)
+        ai8x.normalize(args),
+        ai8x.fold(fold_ratio=fold_ratio)
     ])
 
     if load_train:
@@ -68,6 +69,12 @@ def get_datasets(data, load_train=False, load_test=False):
     return train_dataset, test_dataset
 
 
+def get_untouched(data, load_train=False, load_test=False):
+    return get_datasets(data, load_train, load_test, 1)
+
+def get_folded(data, load_train=False, load_test=False):
+    return get_datasets(data, load_train, load_test, 4)
+
 """
 Dataset description
 """
@@ -76,7 +83,13 @@ datasets = [
         'name': 'classification',
         'input': (3, 88, 88),
         'output': list(map(str, range(2))),
-        'loader': get_datasets,
+        'loader': get_untouched,
+    },
+    {
+        'name': 'classification_folded',
+        'input': (48, 22, 22),
+        'output': list(map(str, range(2))),
+        'loader': get_folded,
     }
 ]
 

@@ -1,0 +1,49 @@
+2024-12-30 17:06:04,548 - Log file for this run: /home/hugo/Documents/MAX78000_face_detection/ai8x-training/logs/2024.12.30-170604/2024.12.30-170604.log
+2024-12-30 17:06:04,548 - The open file limit is 1024. Please raise the limit (see documentation).
+2024-12-30 17:06:04,549 - Configuring device: MAX78000, simulate=True.
+2024-12-30 17:06:04,550 - No CUDA, ROCm, or MPS hardware acceleration, training will be slow
+2024-12-30 17:06:04,567 - => loading checkpoint ../ai8x-synthesis/trained/facenet_v4_trained-q.pth.tar
+2024-12-30 17:06:04,574 - => Checkpoint contents:
++----------------------+-------------+------------+
+| Key                  | Type        | Value      |
+|----------------------+-------------+------------|
+| arch                 | str         | facenet_v4 |
+| compression_sched    | dict        |            |
+| epoch                | int         | 15         |
+| extras               | dict        |            |
+| optimizer_state_dict | dict        |            |
+| optimizer_type       | type        | Adam       |
+| state_dict           | OrderedDict |            |
++----------------------+-------------+------------+
+
+2024-12-30 17:06:04,574 - => Checkpoint['extras'] contents:
++-----------------+--------+-------------------+
+| Key             | Type   | Value             |
+|-----------------+--------+-------------------|
+| best_epoch      | int    | 15                |
+| best_mAP        | int    | 0                 |
+| best_top1       | float  | 88.27160493827161 |
+| clipping_method | str    | MAX_BIT_SHIFT     |
+| current_mAP     | int    | 0                 |
+| current_top1    | float  | 88.27160493827161 |
++-----------------+--------+-------------------+
+
+2024-12-30 17:06:04,574 - Loaded compression schedule from checkpoint (epoch 15)
+2024-12-30 17:06:04,579 - => loaded 'state_dict' from checkpoint '../ai8x-synthesis/trained/facenet_v4_trained-q.pth.tar'
+2024-12-30 17:06:04,581 - Optimizer Type: <class 'torch.optim.sgd.SGD'>
+2024-12-30 17:06:04,581 - Optimizer Args: {'lr': 0.1, 'momentum': 0.9, 'dampening': 0, 'weight_decay': 0.0001, 'nesterov': False, 'maximize': False, 'foreach': None, 'differentiable': False, 'fused': None}
+2024-12-30 17:06:04,591 - torch.compile() not available, using "eager" mode
+2024-12-30 17:06:04,591 - Dataset sizes:
+	test=870
+2024-12-30 17:06:04,591 - --- test (ckpt) ---------------------
+2024-12-30 17:06:04,591 - 870 samples (256 per mini-batch)
+2024-12-30 17:06:05,032 - ==> Saving sample at index 0 to sample_classification_folded.npy
+2024-12-30 17:06:05,215 - Test: [    4/    4]    Loss 3.830853    Top1 84.942529    
+2024-12-30 17:06:05,242 - ==> Top1: 84.943    Loss: 3.831
+
+2024-12-30 17:06:05,243 - ==> Confusion:
+[[368  67]
+ [ 64 371]]
+
+2024-12-30 17:06:05,245 - 
+2024-12-30 17:06:05,245 - Log file for this run: /home/hugo/Documents/MAX78000_face_detection/ai8x-training/logs/2024.12.30-170604/2024.12.30-170604.log
