@@ -11,7 +11,7 @@ GDB=$(PREFIX)gdb
 
 # Dataset and model names
 DATASET=classification
-MODEL=facenet_v7
+MODEL=facenet_v6
 
 # Training variables
 LEARNING_RATE=0.001
